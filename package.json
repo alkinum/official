@@ -10,10 +10,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
-    "cloudflare:create": "wrangler pages project create alkinum-official --production-branch main",
-    "cloudflare:deploy": "npm run build && wrangler pages deploy dist --project-name alkinum-official",
-    "cloudflare:dev": "npm run build && wrangler pages dev dist --port 8788",
-    "cloudflare:projects": "wrangler pages project list",
+    "cloudflare:deploy": "npm run build && wrangler deploy",
+    "cloudflare:dev": "npm run build && wrangler dev --port 8788",
     "cloudflare:whoami": "wrangler whoami",
     "format": "prettier --plugin=prettier-plugin-svelte --plugin=prettier-plugin-astro --write .",
     "preview": "astro preview"

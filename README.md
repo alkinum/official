@@ -13,7 +13,7 @@ The site is a full-viewport Astro experience with a Svelte and Three.js interact
 - Responsive desktop and mobile composition
 - Fine, low-saturation procedural color film grain with no repeating motion path
 - Open Graph, Twitter Card, JSON-LD, sitemap, robots, and canonical metadata
-- Cloudflare Pages deployment configuration and GitHub Actions workflow
+- Cloudflare Workers Static Assets deployment and GitHub Actions workflow
 
 ## Technology
 
@@ -21,7 +21,7 @@ The site is a full-viewport Astro experience with a Svelte and Three.js interact
 - Svelte 5
 - Three.js
 - TypeScript
-- Cloudflare Pages and Wrangler
+- Cloudflare Workers Static Assets and Wrangler
 
 ## Local development
 
@@ -36,17 +36,15 @@ The Astro development server is available at `http://localhost:4321` by default.
 
 ## Commands
 
-| Command                       | Purpose                                              |
-| ----------------------------- | ---------------------------------------------------- |
-| `npm run dev`                 | Start the Astro development server                   |
-| `npm run build`               | Type-check and build the production site             |
-| `npm run preview`             | Preview the Astro production build                   |
-| `npm run format`              | Format project files                                 |
-| `npm run cloudflare:whoami`   | Verify Cloudflare authentication                     |
-| `npm run cloudflare:projects` | List Pages projects in the Alkinum account           |
-| `npm run cloudflare:create`   | Create the Pages project once                        |
-| `npm run cloudflare:dev`      | Run the production output in the local Pages runtime |
-| `npm run cloudflare:deploy`   | Build and deploy to Cloudflare Pages                 |
+| Command                     | Purpose                                                |
+| --------------------------- | ------------------------------------------------------ |
+| `npm run dev`               | Start the Astro development server                     |
+| `npm run build`             | Type-check and build the production site               |
+| `npm run preview`           | Preview the Astro production build                     |
+| `npm run format`            | Format project files                                   |
+| `npm run cloudflare:whoami` | Verify Cloudflare authentication                       |
+| `npm run cloudflare:dev`    | Run the production output in the local Workers runtime |
+| `npm run cloudflare:deploy` | Build and deploy to Cloudflare Workers                 |
 
 ## Domains and SEO
 
@@ -55,11 +53,11 @@ The final site is intended to be served directly from both root domains:
 - `https://alkinum.io`
 - `https://alkinum.com`
 
-Both domains should be attached to the same `alkinum-official` Cloudflare Pages project under **Custom domains**. No domain redirect is required. `alkinum.io` remains the canonical SEO URL so search engines treat both hosts as one site.
+Both domains are configured as Custom Domains for the same `alkinum-official-site` Worker. Cloudflare creates and manages their DNS records and certificates. No domain redirect is configured. `alkinum.io` remains the canonical SEO URL so search engines treat both hosts as one site.
 
 The generated sitemap and structured data also use `https://alkinum.io` as the canonical origin.
 
-## Cloudflare Pages
+## Cloudflare Workers
 
 The project is configured through [`wrangler.jsonc`](./wrangler.jsonc). Account identifiers and credentials are intentionally excluded from the repository.
 
@@ -76,12 +74,6 @@ Select the deployment account at runtime without writing it to a tracked file:
 export CLOUDFLARE_ACCOUNT_ID="your-account-id"
 ```
 
-Create the Pages project once if it does not exist:
-
-```bash
-npm run cloudflare:create
-```
-
 Preview the production output locally:
 
 ```bash
@@ -94,9 +86,9 @@ Deploy:
 npm run cloudflare:deploy
 ```
 
-After the first deployment, attach both `alkinum.io` and `alkinum.com` as root custom domains. The `_headers` file configures security headers and long-lived caching for hashed assets.
+The `wrangler.jsonc` file deploys `dist/` through Workers Static Assets with nearest `404.html` handling. Its Custom Domain routes attach both `alkinum.io` and `alkinum.com` directly, while `_headers` configures security headers and long-lived caching for hashed assets.
 
-For CI, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to the GitHub repository secrets. The token needs Account Read and Cloudflare Pages Edit permissions. The included workflow deploys pushes to `main`.
+For CI, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to the GitHub repository secrets. The token needs Account Read, Workers Scripts Edit, and Workers Routes Edit permissions. The included workflow builds every push to `main` and deploys when both secrets are available.
 
 ## Project structure
 
