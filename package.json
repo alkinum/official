@@ -1,0 +1,40 @@
+{
+  "name": "alkinum-official",
+  "description": "Official open-source website for the Alkinum organization.",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Alkinum",
+  "homepage": "https://alkinum.io",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "cloudflare:create": "wrangler pages project create alkinum-official --production-branch main",
+    "cloudflare:deploy": "npm run build && wrangler pages deploy dist --project-name alkinum-official",
+    "cloudflare:dev": "npm run build && wrangler pages dev dist --port 8788",
+    "cloudflare:projects": "wrangler pages project list",
+    "cloudflare:whoami": "wrangler whoami",
+    "format": "prettier --plugin=prettier-plugin-svelte --plugin=prettier-plugin-astro --write .",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/svelte": "^9.0.1",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource-variable/manrope": "^5.2.8",
+    "@lucide/svelte": "^1.24.0",
+    "astro": "^7.0.8",
+    "svelte": "^5.43.6",
+    "three": "^0.178.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@types/three": "^0.178.1",
+    "prettier": "^3.9.5",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-svelte": "^4.1.1",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.110.0"
+  }
+}

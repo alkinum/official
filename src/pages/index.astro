@@ -1,0 +1,39 @@
+---
+import Experience from "../components/Experience.svelte";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Alkinum | Open Source Digital Alchemy";
+const description = "Fusing Code with Creativity to Spark Digital Alchemy";
+
+const schema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://alkinum.io/#organization",
+      name: "Alkinum",
+      url: "https://alkinum.io/",
+      logo: "https://alkinum.io/alkinum-icon.png",
+      image: "https://alkinum.io/og-image.jpg",
+      description,
+      foundingDate: "2022-10-14",
+      sameAs: ["https://github.com/alkinum"],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://alkinum.io/#website",
+      url: "https://alkinum.io/",
+      name: "Alkinum",
+      description,
+      inLanguage: "en",
+      publisher: {
+        "@id": "https://alkinum.io/#organization",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout {title} {description} {schema}>
+  <Experience client:idle={{ timeout: 1000 }} />
+</BaseLayout>
